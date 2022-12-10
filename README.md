@@ -12,13 +12,16 @@ Distributed Key Value Store in Go
 
 ### v0 (Basic Interface on a Single Machine)
 
-- [ ] `Put(key, value)`
-- [ ] `Get(key)`
-- [ ] `Delete(key)`
+- [x] HTTP Server
+- [x] `Put(key, value)`
+- [x] `Get(key)`
+- [x] `Delete(key)`
+- [ ] Redis as a read & write buffer
 
-### v1 (Leader-Follower Replication)
+### v1 (Master-Slave Architecture)
 
 - [ ] Replicas
+- [ ] Chaos Testing
 
 ### v2 (Sharding)
 
