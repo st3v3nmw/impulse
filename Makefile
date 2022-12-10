@@ -6,12 +6,12 @@ fmt:
 
 .PHONY: test
 test:
-	cd src/ && go test -cover
+	go test ./...  -coverpkg=./... -coverprofile ./coverage.out
+	go tool cover -func ./coverage.out
 
 .PHONY: build
 build:
-	cd src/ && go build -o pithered
-	mv src/pithered .
+	go build -o pithered ./...
 
 .PHONY: run
 run: build

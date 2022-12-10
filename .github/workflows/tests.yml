@@ -1,0 +1,16 @@
+name: Linting & Unit Tests
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  linting-and-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.19.x
+      - uses: actions/checkout@v3
+      - name: Run linter
+        run: gofmt -d -e . && test -z $(gofmt -l .)
+      - name: Run unit tests
+        run: make test
