@@ -16,7 +16,6 @@ Distributed Key Value Store in Go
 - [x] `Put(key, value)`
 - [x] `Get(key)`
 - [x] `Delete(key)`
-- [ ] Redis as a read & write buffer
 
 ### v1 (Master-Slave Architecture)
 
