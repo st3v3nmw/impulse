@@ -34,16 +34,16 @@ func (server Server) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		} else {
 			http.Error(res, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		}
-	case "PUT", "POST":
+	case "PUT":
 		success := server.store.Put(key, value)
 		if success {
-			http.Error(res, http.StatusText(http.StatusNoContent), http.StatusNoContent)
+			res.WriteHeader(http.StatusNoContent)
 		} else {
 			http.Error(res, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		}
 	case "DELETE":
 		server.store.Delete(key)
-		http.Error(res, http.StatusText(http.StatusNoContent), http.StatusNoContent)
+		res.WriteHeader(http.StatusNoContent)
 	default:
 		http.Error(res, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 	}
