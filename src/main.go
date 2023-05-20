@@ -31,9 +31,9 @@ func main() {
 	case "IN_MEMORY_MAP":
 		store = InMemoryMapStore{mem: make(map[string]string)}
 	case "SSTABLE", "LSM_TREE", "B_TREE":
-		log.Panic(fmt.Sprintf("Storage engine %s not implemented:", *engine))
+		log.Panic(fmt.Sprintf("Storage engine %s not implemented yet.", *engine))
 	default:
-		log.Panic(fmt.Sprintf("Storage engine %s does not exist:", *engine))
+		log.Panic(fmt.Sprintf("Storage engine %s does not exist.", *engine))
 	}
 
 	server := Server{store: store}

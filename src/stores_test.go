@@ -40,3 +40,23 @@ func TestLevelDBStore(t *testing.T) {
 	assert.Equal(t, "Jane Doe", read_result)
 	assert.Equal(t, true, success)
 }
+
+func TestInMemoryMapStore(t *testing.T) {
+	store := InMemoryMapStore{mem: make(map[string]string)}
+
+	store.Put("name", "Stephen")
+	read_result, success := store.Get("name")
+	assert.Equal(t, "Stephen", read_result)
+	assert.Equal(t, true, success)
+
+	store.Delete("name")
+	read_result, success = store.Get("name")
+	assert.Equal(t, "", read_result)
+	assert.Equal(t, false, success)
+
+	store.Put("name", "John Doe")
+	store.Put("name", "Jane Doe")
+	read_result, success = store.Get("name")
+	assert.Equal(t, "Jane Doe", read_result)
+	assert.Equal(t, true, success)
+}
