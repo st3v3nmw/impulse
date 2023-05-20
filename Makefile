@@ -11,8 +11,8 @@ test:
 
 .PHONY: build
 build:
-	go build -o pithered ./...
+	go build -o impulse ./...
 
 .PHONY: run
 run: build
-	./pithered --leveldb=${LEVELDB_PATH} --verbose
+	./impulse --leveldb=${LEVELDB_PATH} --verbose

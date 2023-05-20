@@ -16,7 +16,7 @@ import (
 
 func TestServer(t *testing.T) {
 	// Setup LevelDB
-	temp_dir, err := os.MkdirTemp("", "pithered")
+	temp_dir, err := os.MkdirTemp("", "impulse")
 	if err != nil {
 		log.Panic(fmt.Sprintf("Could not make temp dir: %s", err))
 	}
