@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -35,7 +35,7 @@ func TestServer(t *testing.T) {
 	w := httptest.NewRecorder()
 	server.ServeHTTP(w, req)
 	res := w.Result()
-	data, err := ioutil.ReadAll(res.Body)
+	data, err := io.ReadAll(res.Body)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, "", string(data))
 	assert.Equal(t, http.StatusNoContent, res.StatusCode)
@@ -45,7 +45,7 @@ func TestServer(t *testing.T) {
 	w = httptest.NewRecorder()
 	server.ServeHTTP(w, req)
 	res = w.Result()
-	data, err = ioutil.ReadAll(res.Body)
+	data, err = io.ReadAll(res.Body)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, "Stephen", string(data))
 	assert.Equal(t, http.StatusOK, res.StatusCode)
@@ -55,7 +55,7 @@ func TestServer(t *testing.T) {
 	w = httptest.NewRecorder()
 	server.ServeHTTP(w, req)
 	res = w.Result()
-	data, err = ioutil.ReadAll(res.Body)
+	data, err = io.ReadAll(res.Body)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, "Not Found\n", string(data))
 	assert.Equal(t, http.StatusNotFound, res.StatusCode)
@@ -65,7 +65,7 @@ func TestServer(t *testing.T) {
 	w = httptest.NewRecorder()
 	server.ServeHTTP(w, req)
 	res = w.Result()
-	data, err = ioutil.ReadAll(res.Body)
+	data, err = io.ReadAll(res.Body)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, "", string(data))
 	assert.Equal(t, http.StatusNoContent, res.StatusCode)
@@ -75,7 +75,7 @@ func TestServer(t *testing.T) {
 	w = httptest.NewRecorder()
 	server.ServeHTTP(w, req)
 	res = w.Result()
-	data, err = ioutil.ReadAll(res.Body)
+	data, err = io.ReadAll(res.Body)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, "Method Not Allowed\n", string(data))
 	assert.Equal(t, http.StatusMethodNotAllowed, res.StatusCode)
