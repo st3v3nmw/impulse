@@ -54,3 +54,24 @@ func (kv LevelDBStore) Delete(key string) bool {
 	}
 	return err == nil
 }
+
+// In Memory Map
+
+type InMemoryMapStore struct {
+	mem map[string]string
+}
+
+func (kv InMemoryMapStore) Put(key string, value string) bool {
+	kv.mem[key] = value
+	return true
+}
+
+func (kv InMemoryMapStore) Get(key string) (string, bool) {
+	value, ok := kv.mem[key]
+	return value, ok
+}
+
+func (kv InMemoryMapStore) Delete(key string) bool {
+	delete(kv.mem, key)
+	return true
+}

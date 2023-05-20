@@ -29,7 +29,7 @@ func main() {
 		defer disk_db.Close()
 		store = LevelDBStore{disk: disk_db}
 	case "IN_MEMORY_MAP":
-		log.Panic(fmt.Sprintf("Storage engine %s not implemented:", *engine))
+		store = InMemoryMapStore{mem: make(map[string]string)}
 	case "SSTABLE", "LSM_TREE", "B_TREE":
 		log.Panic(fmt.Sprintf("Storage engine %s not implemented:", *engine))
 	default:
