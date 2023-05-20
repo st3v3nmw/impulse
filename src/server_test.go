@@ -27,7 +27,7 @@ func TestServer(t *testing.T) {
 	defer disk_db.Close()
 
 	// Setup Server
-	store := KeyValueStore{disk: disk_db}
+	store := LevelDBStore{disk: disk_db}
 	server := Server{store: &store}
 
 	// Test Put

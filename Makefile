@@ -15,4 +15,4 @@ build:
 
 .PHONY: run
 run: build
-	./impulse --leveldb=${LEVELDB_PATH} --verbose
+	./impulse --engine=LEVELDB --leveldb=${LEVELDB_PATH} --verbose

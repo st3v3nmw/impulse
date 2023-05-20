@@ -10,7 +10,7 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 )
 
-func TestKeyValueStore(t *testing.T) {
+func TestLevelDBStore(t *testing.T) {
 	temp_dir, err := os.MkdirTemp("", "impulse")
 	if err != nil {
 		log.Panic(fmt.Sprintf("Could not make temp dir: %s", err))
@@ -22,7 +22,7 @@ func TestKeyValueStore(t *testing.T) {
 	}
 	defer disk_db.Close()
 
-	store := KeyValueStore{disk: disk_db}
+	store := LevelDBStore{disk: disk_db}
 
 	store.Put("name", "Stephen")
 	read_result, success := store.Get("name")
