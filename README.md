@@ -28,3 +28,9 @@ Distributed Key Value Store in Go
 ### v4 (No Leader Nodes)
 
 - [ ] [Raft Consensus](https://raft.github.io/)
+
+### v5 (Storage)
+
+- [ ] SSTable
+- [ ] LSM-Tree
+- [ ] B-Tree
