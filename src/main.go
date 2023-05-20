@@ -30,6 +30,8 @@ func main() {
 		store = LevelDBStore{disk: disk_db}
 	case "IN_MEMORY_MAP":
 		log.Panic(fmt.Sprintf("Storage engine %s not implemented:", *engine))
+	case "SSTABLE", "LSM_TREE", "B_TREE":
+		log.Panic(fmt.Sprintf("Storage engine %s not implemented:", *engine))
 	default:
 		log.Panic(fmt.Sprintf("Storage engine %s does not exist:", *engine))
 	}
