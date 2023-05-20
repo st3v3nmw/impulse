@@ -2,7 +2,7 @@
 
 make build
 
-N=128
+N=${N:-128}
 declare -A arr
 for ((i=0;i<$N;i++)); do
     arr["{$i}"]=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c32 ; echo '')
@@ -54,18 +54,18 @@ declare -a engines=("LEVELDB" "IN_MEMORY_MAP")
 
 for engine in "${engines[@]}"
 do
-    # setup
+    # Setup
     printf "\n$engine\n"
     echo $(printf '%*s' ${#engine} "" | tr ' ' '=')
     ./impulse --engine=$engine --leveldb=level.db &>/dev/null &
     sleep 2
 
-    # test
+    # Test
     put
     get false
     delete
     get true
 
-    # teardown
+    # Teardown
     kill -9 $(ps -e | grep impulse | awk '{print $1}')
 done
