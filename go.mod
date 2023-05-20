@@ -1,4 +1,4 @@
-module github.com/st3v3nmw/pithered
+module github.com/st3v3nmw/impulse
 
 go 1.19
 

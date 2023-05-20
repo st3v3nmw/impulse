@@ -11,7 +11,7 @@ import (
 )
 
 func TestKeyValueStore(t *testing.T) {
-	temp_dir, err := os.MkdirTemp("", "pithered")
+	temp_dir, err := os.MkdirTemp("", "impulse")
 	if err != nil {
 		log.Panic(fmt.Sprintf("Could not make temp dir: %s", err))
 	}
