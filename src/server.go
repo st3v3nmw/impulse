@@ -9,7 +9,7 @@ import (
 )
 
 type Server struct {
-	store *KeyValueStore
+	store KeyValueStore
 }
 
 func (server Server) ServeHTTP(res http.ResponseWriter, req *http.Request) {

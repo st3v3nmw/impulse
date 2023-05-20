@@ -1,8 +1,20 @@
 # impulse
 
+> Wer Ordnung hält, ist nur zu faul zum Suchen. \
+> (If you keep things tidily ordered, you’re just too lazy to go searching.) \
+> — German proverb
+
 Distributed Key Value Store in Go
 
 ## Features
+
+### v-1 (Storage)
+
+- [x] LevelDB
+- [ ] In Memory Map
+- [ ] SSTable
+- [ ] LSM-Tree
+- [ ] B-Tree
 
 ### v0 (Basic Interface on a Single Machine)
 
@@ -28,9 +40,3 @@ Distributed Key Value Store in Go
 ### v4 (No Leader Nodes)
 
 - [ ] [Raft Consensus](https://raft.github.io/)
-
-### v5 (Storage)
-
-- [ ] SSTable
-- [ ] LSM-Tree
-- [ ] B-Tree

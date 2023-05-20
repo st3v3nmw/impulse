@@ -7,11 +7,11 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 )
 
-type KeyValueStore struct {
+type LevelDBStore struct {
 	disk *leveldb.DB
 }
 
-func (kv KeyValueStore) Put(key string, value string) bool {
+func (kv LevelDBStore) Put(key string, value string) bool {
 	err := kv.disk.Put([]byte(key), []byte(value), nil)
 	if err != nil {
 		log.WithFields(log.Fields{
@@ -22,7 +22,7 @@ func (kv KeyValueStore) Put(key string, value string) bool {
 	return err == nil
 }
 
-func (kv KeyValueStore) Get(key string) (string, bool) {
+func (kv LevelDBStore) Get(key string) (string, bool) {
 	data, err := kv.disk.Get([]byte(key), nil)
 	var value string
 	if err == nil {
@@ -35,7 +35,7 @@ func (kv KeyValueStore) Get(key string) (string, bool) {
 	return value, err == nil
 }
 
-func (kv KeyValueStore) Delete(key string) bool {
+func (kv LevelDBStore) Delete(key string) bool {
 	err := kv.disk.Delete([]byte(key), nil)
 	if err != nil {
 		log.WithFields(log.Fields{
