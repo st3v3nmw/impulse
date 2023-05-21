@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/syndtr/goleveldb/leveldb"
@@ -21,7 +22,7 @@ type LevelDBStore struct {
 	disk *leveldb.DB
 }
 
-func (kv LevelDBStore) Put(key string, value string) bool {
+func (kv *LevelDBStore) Put(key string, value string) bool {
 	err := kv.disk.Put([]byte(key), []byte(value), nil)
 	if err != nil {
 		log.WithFields(log.Fields{
@@ -45,7 +46,7 @@ func (kv LevelDBStore) Get(key string) (string, bool) {
 	return value, err == nil
 }
 
-func (kv LevelDBStore) Delete(key string) bool {
+func (kv *LevelDBStore) Delete(key string) bool {
 	err := kv.disk.Delete([]byte(key), nil)
 	if err != nil {
 		log.WithFields(log.Fields{
@@ -55,23 +56,35 @@ func (kv LevelDBStore) Delete(key string) bool {
 	return err == nil
 }
 
-// In Memory Map
+// Hash Map
 
-type InMemoryMapStore struct {
-	mem map[string]string
+type HashMapStore struct {
+	lock     sync.RWMutex
+	hash_map map[string]string
 }
 
-func (kv InMemoryMapStore) Put(key string, value string) bool {
-	kv.mem[key] = value
+func (kv *HashMapStore) Put(key string, value string) bool {
+	kv.lock.Lock()
+	kv.hash_map[key] = value
+	kv.lock.Unlock()
 	return true
 }
 
-func (kv InMemoryMapStore) Get(key string) (string, bool) {
-	value, ok := kv.mem[key]
+func (kv *HashMapStore) Get(key string) (string, bool) {
+	kv.lock.RLock()
+	value, ok := kv.hash_map[key]
+	kv.lock.RUnlock()
 	return value, ok
 }
 
-func (kv InMemoryMapStore) Delete(key string) bool {
-	delete(kv.mem, key)
+func (kv *HashMapStore) Delete(key string) bool {
+	kv.lock.Lock()
+	delete(kv.hash_map, key)
+	kv.lock.Unlock()
 	return true
+}
+
+// Sorted Strings Table
+
+type SSTableStore struct {
 }
