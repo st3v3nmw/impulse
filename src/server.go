@@ -1,50 +1,37 @@
 package main
 
 import (
-	"fmt"
-	"io"
-	"net/http"
-
-	log "github.com/sirupsen/logrus"
+	"github.com/valyala/fasthttp"
 )
 
 type Server struct {
 	store KeyValueStore
 }
 
-func (server Server) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	key := req.URL.Path[1:]
-	body, err := io.ReadAll(req.Body)
-	if err != nil {
-		log.Error("Could not read request body")
-	}
-	value := string(body)
+func (server Server) HandleFastHTTP(ctx *fasthttp.RequestCtx) {
+	key := string(ctx.Path()[1:])
+	value := string(ctx.PostBody())
+	method := string(ctx.Method())
 
-	log.WithFields(log.Fields{
-		"method": req.Method,
-		"key":    key,
-		"value":  value,
-	}).Debug("Received a request")
-
-	switch req.Method {
+	switch method {
 	case "GET":
 		value, success := server.store.Get(key)
 		if success {
-			fmt.Fprint(res, value)
+			ctx.WriteString(value)
 		} else {
-			http.Error(res, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+			ctx.SetStatusCode(fasthttp.StatusNotFound)
 		}
-	case "PUT":
+	case "PUT", "POST":
 		success := server.store.Put(key, value)
 		if success {
-			res.WriteHeader(http.StatusNoContent)
+			ctx.SetStatusCode(fasthttp.StatusNoContent)
 		} else {
-			http.Error(res, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			ctx.SetStatusCode(fasthttp.StatusInternalServerError)
 		}
 	case "DELETE":
 		server.store.Delete(key)
-		res.WriteHeader(http.StatusNoContent)
+		ctx.SetStatusCode(fasthttp.StatusNoContent)
 	default:
-		http.Error(res, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
 	}
 }

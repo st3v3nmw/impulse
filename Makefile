@@ -1,7 +1,7 @@
 LEVELDB_PATH = "level.db"
 
-.PHONY: fmt
-fmt:
+.PHONY: format
+format:
 	gofmt -w .
 
 .PHONY: test

@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"net/http"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/valyala/fasthttp"
 )
 
 func main() {
@@ -27,15 +27,15 @@ func main() {
 			log.Panic(fmt.Sprintf("Failed to open LevelDB: %s", err))
 		}
 		defer disk_db.Close()
-		store = LevelDBStore{disk: disk_db}
-	case "IN_MEMORY_MAP":
-		store = InMemoryMapStore{mem: make(map[string]string)}
-	case "SSTABLE", "LSM_TREE", "B_TREE":
+		store = &LevelDBStore{disk: disk_db}
+	case "HASH_MAP":
+		store = &HashMapStore{hash_map: make(map[string]string)}
+	case "LSM_TREE", "B_TREE":
 		log.Panic(fmt.Sprintf("Storage engine %s not implemented yet.", *engine))
 	default:
 		log.Panic(fmt.Sprintf("Storage engine %s does not exist.", *engine))
 	}
 
 	server := Server{store: store}
-	http.ListenAndServe(":3000", server)
+	fasthttp.ListenAndServe(":3000", server.HandleFastHTTP)
 }
