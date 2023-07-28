@@ -27,7 +27,6 @@ do
     printf "\n$engine\n"
     echo $(printf '%*s' ${#engine} "" | tr ' ' '=')
     ./impulse --engine=$engine --leveldb=level.db &>/dev/null &
-    SERVER_PID=
     sleep 2
 
     # Run Tests

@@ -8,22 +8,21 @@ Distributed Key-Value Store in Go
 
 ## Roadmap
 
-- [x] HTTP Server API
+- [x] HTTP Server API (with `fasthttp`)
   - [x] `Put(key, value)`
   - [x] `Get(key) -> value`
   - [x] `Delete(key)`
-  - [x] `Switch to fasthttp`
 - [ ] Storage Engines
   - [x] Hash Map (with `sync.RWMutex`)
   - [x] LevelDB
-  - [ ] SSTable
   - [ ] LSM-Tree
+      - [ ] SSTable
       - [ ] Bloom Filter
-  - [ ] B-Tree
-- [ ] Range Queries
+  - [ ] B Tree
 - [ ] Single Leader Replication
-- [ ] Chaos Testing (like Netflix's [Chaos Monkey](https://netflix.github.io/chaosmonkey/))
 - [ ] Leaderless Replication (using [the Raft Consensus Protocol](https://raft.github.io/))
+- [ ] Chaos Testing (like Netflix's [Chaos Monkey](https://netflix.github.io/chaosmonkey/))
+- [ ] Range Queries
 - [ ] Sharding
 
 ## "Benchmarks"
