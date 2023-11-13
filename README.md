@@ -19,8 +19,8 @@ Distributed Key-Value Store in Go
       - [ ] SSTable
       - [ ] Bloom Filter
   - [ ] B Tree
-- [ ] Single Leader Replication
-- [ ] Leaderless Replication (using [the Raft Consensus Protocol](https://raft.github.io/))
+- [ ] Single Leader Replication (leader election with [Raft Consensus Protocol](https://raft.github.io/))
+- [ ] Leaderless Replication (peer-to-peer coordination)
 - [ ] Chaos Testing (like Netflix's [Chaos Monkey](https://netflix.github.io/chaosmonkey/))
 - [ ] Range Queries
 - [ ] Sharding
