@@ -22,6 +22,7 @@ Distributed Key-Value Store in Go
 - [ ] Single Leader Replication
   - [x] Service Discovery
   - [ ] Leader Election with [Raft Consensus Protocol](https://raft.github.io/)
+  - [ ] Replication
 - [ ] Leaderless Replication (peer-to-peer coordination)
 - [ ] Chaos Testing (like Netflix's [Chaos Monkey](https://netflix.github.io/chaosmonkey/))
 - [ ] Range Queries
