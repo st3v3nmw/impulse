@@ -21,6 +21,12 @@ spec:
           args:
             - "/impulse"
             - "--engine=HASH_MAP"
+            - "--replication=SINGLE_LEADER"
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
           ports:
             - containerPort: 3000
               name: http
