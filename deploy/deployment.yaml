@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: impulse
+  namespace: impulse
+spec:
+  selector:
+    matchLabels:
+      app: impulse
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: impulse
+        namespace: ntfy
+    spec:
+      containers:
+        - name: impulse
+          image: localhost:32000/impulse:latest
+          imagePullPolicy: Always
+          args:
+            - "/impulse"
+            - "--engine=HASH_MAP"
+          ports:
+            - containerPort: 3000
+              name: http
+      restartPolicy: Always
