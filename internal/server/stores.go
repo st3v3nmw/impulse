@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"fmt"
@@ -59,27 +59,27 @@ func (kv *LevelDBStore) Delete(key string) bool {
 // Hash Map
 
 type HashMapStore struct {
-	lock     sync.RWMutex
-	hash_map map[string]string
+	lock    sync.RWMutex
+	hashMap map[string]string
 }
 
 func (kv *HashMapStore) Put(key string, value string) bool {
 	kv.lock.Lock()
-	kv.hash_map[key] = value
+	kv.hashMap[key] = value
 	kv.lock.Unlock()
 	return true
 }
 
 func (kv *HashMapStore) Get(key string) (string, bool) {
 	kv.lock.RLock()
-	value, ok := kv.hash_map[key]
+	value, ok := kv.hashMap[key]
 	kv.lock.RUnlock()
 	return value, ok
 }
 
 func (kv *HashMapStore) Delete(key string) bool {
 	kv.lock.Lock()
-	delete(kv.hash_map, key)
+	delete(kv.hashMap, key)
 	kv.lock.Unlock()
 	return true
 }

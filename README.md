@@ -27,10 +27,10 @@ Distributed Key-Value Store in Go
 
 ## "Benchmarks"
 
-### benchmarks/concurrent.sh
+### scripts/concurrency_test.sh
 
 ```console
-> ./benchmarks/concurrent.sh
+> ./scripts/concurrent.sh
 go build -o impulse ./...
 
 HASH_MAP
@@ -106,10 +106,10 @@ Slowest Request:	31.113818ms
 Number of Errors:	0
 ```
 
-### benchmarks/sequential.sh
+### scripts/sequential_test.sh
 
 ```console
-> N=2048 ./benchmarks/sequential.sh
+> N=2048 ./scripts/sequential_test.sh
 go build -o impulse ./...
 
 HASH_MAP
@@ -127,4 +127,4 @@ DELETE: 104.30 requests per second
 GET (missing): 95.17 requests per second
 ```
 
-### benchmarks/resilience.sh
+### scripts/resilience_test.sh
