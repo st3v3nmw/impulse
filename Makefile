@@ -11,7 +11,7 @@ test:
 
 .PHONY: build
 build:
-	go build -o impulse ./...
+	go build -o impulse ./cmd/impulse
 
 .PHONY: run
 run: build
