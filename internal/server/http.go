@@ -7,11 +7,23 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+// enums
+
+type ReplicationMode int
+
+const (
+	NoReplication ReplicationMode = iota
+	SingleLeaderReplication
+	LeaderlessReplication
+)
+
 type Server struct {
-	store KeyValueStore
+	store           KeyValueStore
+	replicationMode ReplicationMode
+	discovery       Discovery
 }
 
-func NewHTTPServer(engine string, diskDBPath string) Server {
+func NewHTTPServer(engine string, replMode string, diskDBPath string) Server {
 	var store KeyValueStore
 	switch engine {
 	case "LEVELDB":
@@ -29,7 +41,23 @@ func NewHTTPServer(engine string, diskDBPath string) Server {
 		log.Panicf("Storage engine %s does not exist.", engine)
 	}
 
-	return Server{store: store}
+	var replicationMode ReplicationMode
+	switch replMode {
+	case "NONE":
+		replicationMode = NoReplication
+	case "SINGLE_LEADER":
+		replicationMode = SingleLeaderReplication
+	case "LEADERLESS":
+		log.Panicf("Replication mode %s not implemented yet.", replMode)
+	default:
+		log.Panicf("Unknown replication mode %s", replMode)
+	}
+
+	server := Server{store: store, replicationMode: replicationMode}
+	if replicationMode != NoReplication {
+		server.discovery.discover()
+	}
+	return server
 }
 
 func (server Server) HandleFastHTTP(ctx *fasthttp.RequestCtx) {

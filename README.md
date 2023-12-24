@@ -19,11 +19,23 @@ Distributed Key-Value Store in Go
       - [ ] SSTable
       - [ ] Bloom Filter
   - [ ] B Tree
-- [ ] Single Leader Replication (leader election with [Raft Consensus Protocol](https://raft.github.io/))
+- [ ] Single Leader Replication
+  - [x] Service Discovery
+  - [ ] Leader Election with [Raft Consensus Protocol](https://raft.github.io/)
 - [ ] Leaderless Replication (peer-to-peer coordination)
 - [ ] Chaos Testing (like Netflix's [Chaos Monkey](https://netflix.github.io/chaosmonkey/))
 - [ ] Range Queries
 - [ ] Sharding
+
+## Usage
+
+### Setup
+
+Enable the RBAC addon on microk8s and create a role binding which will grant the default service account view permissions.
+
+```
+microk8s kubectl create clusterrolebinding default-view-impulse --clusterrole=view --serviceaccount=impulse:default
+```
 
 ## "Benchmarks"
 

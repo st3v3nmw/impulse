@@ -11,6 +11,7 @@ import (
 
 func main() {
 	engine := flag.String("engine", "LEVELDB", "Name of Storage Engine")
+	replicationMode := flag.String("replication", "NONE", "Replication mode")
 	diskDBPath := flag.String("leveldb", "", "Path to LevelDB")
 	verbose := flag.Bool("verbose", false, "Verbose output")
 	flag.Parse()
@@ -19,7 +20,7 @@ func main() {
 		log.SetLevel(log.TraceLevel)
 	}
 
-	server := server.NewHTTPServer(*engine, *diskDBPath)
+	server := server.NewHTTPServer(*engine, *replicationMode, *diskDBPath)
 	log.Info("Starting server...")
 	fasthttp.ListenAndServe(":3000", server.HandleFastHTTP)
 }
