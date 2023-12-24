@@ -20,5 +20,6 @@ func main() {
 	}
 
 	server := server.NewHTTPServer(*engine, *diskDBPath)
+	log.Info("Starting server...")
 	fasthttp.ListenAndServe(":3000", server.HandleFastHTTP)
 }
