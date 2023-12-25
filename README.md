@@ -21,7 +21,7 @@ Distributed Key-Value Store in Go
   - [ ] B Tree
 - [ ] Single Leader Replication
   - [x] Service Discovery
-  - [ ] Leader Election with [Raft Consensus Protocol](https://raft.github.io/)
+  - [x] Leader Election with [Raft Consensus Protocol](https://raft.github.io/)
   - [ ] Replication
 - [ ] Leaderless Replication (peer-to-peer coordination)
 - [ ] Chaos Testing (like Netflix's [Chaos Monkey](https://netflix.github.io/chaosmonkey/))
