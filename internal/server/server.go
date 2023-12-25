@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"log"
 
 	"github.com/syndtr/goleveldb/leveldb"
@@ -17,13 +18,15 @@ const (
 	LeaderlessReplication
 )
 
+// Server
+
 type Server struct {
 	store           KeyValueStore
 	replicationMode ReplicationMode
-	discovery       Discovery
+	cluster         *Cluster
 }
 
-func NewHTTPServer(engine string, replMode string, diskDBPath string) Server {
+func NewHTTPServer(engine string, replMode string, diskDBPath string) *Server {
 	var store KeyValueStore
 	switch engine {
 	case "LEVELDB":
@@ -53,14 +56,17 @@ func NewHTTPServer(engine string, replMode string, diskDBPath string) Server {
 		log.Panicf("Unknown replication mode %s", replMode)
 	}
 
-	server := Server{store: store, replicationMode: replicationMode}
+	server := Server{store: store, replicationMode: replicationMode, cluster: NewCluster()}
 	if replicationMode != NoReplication {
-		server.discovery.discover()
+		server.cluster.discover()
 	}
-	return server
+	if replicationMode == SingleLeaderReplication {
+		server.cluster.raftState.initialize()
+	}
+	return &server
 }
 
-func (server Server) HandleFastHTTP(ctx *fasthttp.RequestCtx) {
+func (server *Server) HandleFastHTTP(ctx *fasthttp.RequestCtx) {
 	key := string(ctx.Path()[1:])
 	value := string(ctx.PostBody())
 	method := string(ctx.Method())
@@ -73,7 +79,7 @@ func (server Server) HandleFastHTTP(ctx *fasthttp.RequestCtx) {
 		} else {
 			ctx.SetStatusCode(fasthttp.StatusNotFound)
 		}
-	case "PUT", "POST":
+	case "PUT":
 		success := server.store.Put(key, value)
 		if success {
 			ctx.SetStatusCode(fasthttp.StatusNoContent)
@@ -83,7 +89,26 @@ func (server Server) HandleFastHTTP(ctx *fasthttp.RequestCtx) {
 	case "DELETE":
 		server.store.Delete(key)
 		ctx.SetStatusCode(fasthttp.StatusNoContent)
+	case "POST":
+		// Leader election, etc calls are handled via POST
+		server.handlePOST(ctx)
 	default:
 		ctx.SetStatusCode(fasthttp.StatusMethodNotAllowed)
+	}
+}
+
+func (server *Server) handlePOST(ctx *fasthttp.RequestCtx) {
+	switch string(ctx.Path()) {
+	case "/raft/requestVote":
+		voteRequest := RaftHeartbeat{}
+		json.Unmarshal(ctx.PostBody(), &voteRequest)
+		voteResponse, _ := json.Marshal(server.cluster.raftState.handleVoteRequest(voteRequest))
+		ctx.SetContentType("application/json")
+		ctx.SetBody(voteResponse)
+	case "/raft/heartbeat":
+		heartbeat := RaftHeartbeat{}
+		json.Unmarshal(ctx.PostBody(), &heartbeat)
+		server.cluster.raftState.handleHeartbeat(heartbeat)
+		ctx.SetStatusCode(fasthttp.StatusNoContent)
 	}
 }
