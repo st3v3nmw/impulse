@@ -1,5 +1,8 @@
 # impulse
 
+> [!IMPORTANT]
+> This repository has been archived. [crafty-key-value](https://github.com/st3v3nmw/crafty-key-value) is this repository's spiritual successor.
+
 > Wer Ordnung hält, ist nur zu faul zum Suchen. \
 > (If you keep things tidily ordered, you’re just too lazy to go searching.) \
 > — German proverb, Designing Data-Intensive Applications
